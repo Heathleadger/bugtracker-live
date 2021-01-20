@@ -25,7 +25,7 @@ SECRET_KEY = 'q+gxt@#147sj@y6_ys#!fgdj7+sgoe2vzw0o0s%--=4bmem$7$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://vsabugtracker.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['vsabugtracker.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
