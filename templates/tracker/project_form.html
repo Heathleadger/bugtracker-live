@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container col-4">
+  <div class="card mt-2">
+    <div class="card-header">Project Creation</div>
+    <form method="POST" id="create_project" class="m-2">
+      {% csrf_token %}
+      <div class="form-group">{{form.name.label}} {{form.name}}</div>
+      <div class="form-group">
+        {{form.description.label}} {{form.description}}
+      </div>
+      <div class="form-group">{{form.manager.label}} {{form.manager}}</div>
+
+      {% comment %}
+      <div class="form-group">
+        {{form.stakeholder.label}}{{form.stakeholder}}
+      </div>
+      {% endcomment %}
+      <span> Stakeholders</span>
+      <div>
+        <table class="table added"></table>
+      </div>
+      <div class="d-flex mb-2">
+        <input
+          type="text"
+          placeholder="Search by email"
+          class="form-control"
+          id="search_bar"
+        />
+        <button class="btn btn-primary" id="filter_btn">Search</button>
+      </div>
+      <table class="table" id="id_email">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Add</th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+{% comment %}           {% for stakeholder in filter.qs %}
+          <tr>
+            <td>
+              <label for="id_stakeholder_{{ stakeholder.id}}">
+                <input
+                  type="checkbox"
+                  form="create_project"
+                  name="stakeholder"
+                  value="{{ stakeholder.id}}"
+                  id="id_stakeholder_{{ stakeholder.id}}"
+                />
+              </label>
+            </td>
+            <td>{{ stakeholder.email}}</td>
+            <td>{{ stakeholder.get_role_display}}</td>
+          </tr>
+          {% endfor %} {% endcomment %}
+        </tbody>
+      </table>
+        <button type="submit" class="btn btn-primary" form="create_project">
+          Submit
+        </button>
+    </form>
+  </div>
+</div>
+{% load static %}
+<script src="{% static 'js/main/account_search.js'%}"
+{% endblock content %}

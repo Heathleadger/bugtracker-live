@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container col-3">
+  <form method="POST" id="creation">
+    {% csrf_token %} {{form.name}} {{form.description}} {{form.manager}}
+    {{form.public}}
+    <ul id="id_stakeholder">
+      {% for stake in stakeholders %}
+      <li>
+        <label>
+          <input
+            type="checkbox"
+            name="stakeholder"
+            value="{{ stake.id }}"
+            class="form-check-input"
+            form="creation"
+          />
+          {{ stake }}
+        </label>
+      </li>
+    </ul>
+    {% endfor %}
+  </form>
+  <form method="GET" id="search">{{stake_filter.form}}</form>
+
+  <button type="submit" form="search">search</button>
+  <button type="submit" id="creation">Create</button>
+</div>
+<script>
+  var url = "http://127.0.0.1:8000/accounts_json";
+  wrapper = document.getElementById("stakeholders_js");
+  fetch(url)
+    .then((resp) => resp.json())
+    .then(function (data) {
+      console.log(JSON.parse(data));
+
+      var list = JSON.parse(data);
+
+      for (var i in list) {
+        var item = `      <li>
+        <label>
+          <input
+            type="checkbox"
+            name="stakeholder"
+            value="${list[i].fields.pk}"
+            class="form-check-input"
+            form="creation"
+          />
+          ${list[i].fields.email}
+        </label>
+      </li>
+        `;
+        wrapper.innerHTML += item;
+      }
+    });
+</script>
+{% endblock %}

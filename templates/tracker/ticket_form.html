@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <span>Create new Ticket</span>
+    </div>
+    <div class="m-2">
+      <form method="POST">
+        {% csrf_token%}
+        <div class="form-group">{{ form.title.label}} {{ form.title}}</div>
+        <div class="form-group">
+          {{ form.description.label}} {{ form.description}}
+        </div>
+        <div class="form-group">
+          {{ form.deadline.label}} {{ form.deadline}}
+        </div>
+        {% if request.user.role == 1 %}
+        <div class="form-group">
+          {{ form.assigned.label}} {{ form.assigned}}
+        </div>
+        {% endif %}
+        <div class="form-group">
+          {{ form.priority.label}} {{ form.priority}}
+        </div>
+        <div class="form-group">{{ form.tag.label}} {{ form.tag}}</div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

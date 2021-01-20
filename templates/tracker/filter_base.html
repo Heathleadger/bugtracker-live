@@ -1,0 +1,36 @@
+<div>
+  <form method="get" id="filter_stakeholder">
+    {{filter.form.email}}
+    <button class="btn btn-primary" type="submit" form="filter_stakeholder">
+      Search
+    </button>
+  </form>
+</div>
+<table class="table" id="id_email">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stakeholder in filter.qs %}
+    <tr>
+      <td>
+        <label for="id_stakeholder_{{ stakeholder.id}}">
+          <input
+            type="checkbox"
+            form="create_project"
+            name="stakeholder"
+            value="{{ stakeholder.id}}"
+            id="id_stakeholder_{{ stakeholder.id}}"
+          />
+        </label>
+      </td>
+      <td>{{ stakeholder.email}}</td>
+      <td>{{ stakeholder.get_role_display}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

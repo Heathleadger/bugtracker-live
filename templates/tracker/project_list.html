@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% block content %}
+{% load custom_tag %}
+<div class="container">
+  <div class="card mt-3">
+    <div class="card-header">
+      <h2 class="d-inline-flex">My projects</h2>
+      {% if request.user.role == 1 %}
+      <a
+        class="btn btn-primary float-right justify-content-center"
+        href="{% url 'tracker:project-create' %}"
+      >
+        Create new project</a
+      >
+      {% endif %}
+    </div>
+      <form method="GET">
+        <div class="input-group" width="100%">
+          <input type="text" class="form-control" id="search_bar" width="100% "name="search" placeholder="Search by Project name"></input>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" id="filter_btn" type="submit">Search</button>
+          </span>
+        </div>
+      </form>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Project Managers</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in object_list %}
+        <tr>
+          <td>
+            <a href="{% url 'tracker:project-detail' project.id %}">
+              {{project.id}}
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'tracker:project-detail' project.id %}">
+              {{project.name}}
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'tracker:project-detail' project.id %}">
+              {% for manager in project.manager.all %} {{manager}} {% endfor %}
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="card-footer d-flex justify-content-center">
+  <nav aria-label="...">
+    <ul class="pagination">
+
+      
+      <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+        <a class="page-link" href="?{% if page_obj.has_previous %}{% param_replace page=page_obj.previous_page_number %} {% endif %}" tabindex="-1">Previous</a>
+      </li>
+      
+       {% for page_num in paginator.page_range %}
+          <li class="page-item {% if page_obj.number == page_num %} active {% endif %}"><a class="page-link" href="?{% param_replace page=page_num %}">{{page_num}}</a></li>       
+       {% endfor %}
+
+      <li class="page-item{% if not page_obj.has_next %} disabled {% endif %}">
+        <a class="page-link" href="?{% if page_obj.has_next %}{% param_replace page=page_obj.next_page_number %}{% endif %}">Next</a>
+      </li>
+    </ul>
+  </nav>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}
+</div>

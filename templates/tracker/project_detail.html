@@ -1,0 +1,142 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="row ml-5 mr-5">
+  <div class="col-6 mt-2">
+    <div class="card">
+      <div class="card-header">
+        <span><h3 class="d-inline-flex">Project Details</h3></span>
+        {% if request.user.role == 1 %}
+        <span class="d-flex float-right">
+          <a
+            class="btn btn-primary mr-1"
+            href="{% url 'tracker:project-edit' object.id %}"
+          >
+            Edit
+          </a>
+          <form
+            action="{% url 'tracker:project-delete' object.id %}"
+            method="post"
+          >
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="btn btn-danger mr-1"
+              onclick="return confirm('Are you sure?')"
+            >
+              Delete
+            </button>
+          </form>
+          {% endif %}
+        </span>
+      </div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>#</th>
+            <td>{{object.id}}</td>
+          </tr>
+          <tr>
+            <th>Name</th>
+            <td>{{object.name}}</td>
+          </tr>
+          <tr>
+            <th>Public</th>
+            <td>{% if object.public %}Yes {% else %}No {% endif %}</td>
+          </tr>
+          <tr>
+            <th>Project Managers</th>
+            <td>
+              <ul>
+                {% for manager in object.manager.all %}
+                <li>{{manager}}</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <th>Project Stakeholders</th>
+            <td>
+              <table class="table">
+                <tbody>
+                  {% for stakeholder in object.stakeholder.all %}
+                  <tr>
+                    <td>{{stakeholder}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-6">
+    {% if request.user.role == 2 %}
+    <div class="card mt-2">
+      <div class="card-header">My assignments</div>
+      <ul class="list-group">
+        {% for ticket in user_tickets %}
+        <li class="list-group-item">
+          <a href="{% url 'tracker:ticket-detail' ticket.id%}"
+            >{{ticket.title}}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    <div class="card mt-2">
+      <div class="card-header">
+        <span>Tickets</span>
+        <a
+          class="btn btn-primary float-right"
+          href="{% url 'tracker:ticket-create' project_id=object.id%}"
+          >+
+        </a>
+      </div>
+      <form role="form" method="GET">
+        <div class="input-group">
+          <input
+            type="text"
+            name="search"
+            class="form-control"
+            id="search_bar"
+            placeholder="Search by Ticket Title"
+          />
+          <button class="btn btn-primary" id="filter_btn" type="submit">
+            Search
+          </button>
+        </div>
+      </form>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Ticket</th>
+            <th>Tag</th>
+            <th>Priority</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in tickets %}
+          <tr>
+            <td>
+              <a href="{% url 'tracker:ticket-detail' ticket.id%}">
+                {{ticket.title}}
+              </a>
+            </td>
+            <td>{{ ticket.tag}}</td>
+            <td>{{ ticket.get_priority_display}}</td>
+            <td>{{ ticket.get_status_display}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <ul class="list-group"></ul>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
