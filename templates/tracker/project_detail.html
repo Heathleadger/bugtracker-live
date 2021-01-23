@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="row ml-5 mr-5">
-  <div class="col-6 mt-2">
+  <div class="col-md-6 mt-2">
     <div class="card">
       <div class="card-header">
         <span><h3 class="d-inline-flex">Project Details</h3></span>
@@ -29,7 +29,7 @@
           {% endif %}
         </span>
       </div>
-      <table class="table">
+      <table class="table table-responsive">
         <tbody>
           <tr>
             <th>#</th>
@@ -71,7 +71,7 @@
       </table>
     </div>
   </div>
-  <div class="col-6">
+  <div class="col-md-6">
     {% if request.user.role == 2 %}
     <div class="card mt-2">
       <div class="card-header">My assignments</div>

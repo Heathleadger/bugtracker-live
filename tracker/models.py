@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from accounts.models import Account
 from django.urls import reverse
+from simple_history.models import HistoricalRecords
 
 # Create your models here.        
 
@@ -11,6 +12,7 @@ class Project(models.Model):
     manager = models.ManyToManyField(Account,related_name='projectmanager')
     public = models.BooleanField(default=True)
     stakeholder = models.ManyToManyField(Account, related_name='projectstakeholder', blank=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name

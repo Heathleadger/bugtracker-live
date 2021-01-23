@@ -13,7 +13,10 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.paginator import Paginator
 
+
 # General
+
+
 def homepage(request):
     return render(request, 'homepage.html')
 
@@ -49,7 +52,9 @@ def project_create_view(request):
     }
     return render(request, 'tracker/project_creating.html', context)
 
+
 # Ticket Views
+
 
 def ticket_detail_view(request, pk):
     ticket = Ticket.objects.get(id=pk)
@@ -140,7 +145,10 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         return reverse('tracker:project-detail', kwargs={'pk': self.kwargs['project_id']})
 
 
-    # Project Views
+
+# Project Views
+
+
 class ProjectDetailView(LoginRequiredMixin, DetailView):
     login_url = '/accounts/template/registration/login/'
     model = Project

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django_filters',
     'tracker',
     'accounts',
-    'gunicorn'
+    'simple_history'
 
 ]
 
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'bugtracker.urls'

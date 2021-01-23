@@ -53,25 +53,22 @@
       </tbody>
     </table>
     <div class="card-footer d-flex justify-content-center">
-  <nav aria-label="...">
-    <ul class="pagination">
+      <nav aria-label="...">
+        <ul class="pagination">
+          <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+            <a class="page-link" href="?{% if page_obj.has_previous %}{% param_replace page=page_obj.previous_page_number %} {% endif %}" tabindex="-1">Previous</a>
+          </li>
+          
+          {% for page_num in paginator.page_range %}
+              <li class="page-item {% if page_obj.number == page_num %} active {% endif %}"><a class="page-link" href="?{% param_replace page=page_num %}">{{page_num}}</a></li>       
+          {% endfor %}
 
-      
-      <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
-        <a class="page-link" href="?{% if page_obj.has_previous %}{% param_replace page=page_obj.previous_page_number %} {% endif %}" tabindex="-1">Previous</a>
-      </li>
-      
-       {% for page_num in paginator.page_range %}
-          <li class="page-item {% if page_obj.number == page_num %} active {% endif %}"><a class="page-link" href="?{% param_replace page=page_num %}">{{page_num}}</a></li>       
-       {% endfor %}
-
-      <li class="page-item{% if not page_obj.has_next %} disabled {% endif %}">
-        <a class="page-link" href="?{% if page_obj.has_next %}{% param_replace page=page_obj.next_page_number %}{% endif %}">Next</a>
-      </li>
-    </ul>
-  </nav>
-      </div>
+          <li class="page-item{% if not page_obj.has_next %} disabled {% endif %}">
+            <a class="page-link" href="?{% if page_obj.has_next %}{% param_replace page=page_obj.next_page_number %}{% endif %}">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
-  {% endblock content %}
 </div>
+  {% endblock content %}
