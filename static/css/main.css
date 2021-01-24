@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap);
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
 :root {
   --sd-primary: rgb(50, 89, 244);
@@ -8,11 +8,13 @@
 #search_bar {
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+  height: 2rem;
 }
 
 #filter_btn {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+  height: 2rem;
 }
 
 html,
@@ -25,7 +27,7 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   font-size: 1.2rem;
-  font-family: "Josefin Sans", sans-serif; /*Specify your font name here*/
+  font-family: "Poppins", sans-serif; /*Specify your font name here*/
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -44,8 +46,8 @@ main {
   min-height: 100vh;
 }
 footer {
-  display: flex;
-  margin-top: 10rem;
+  position: absolute;
+  bottom: 0;
 }
 
 .top-bar {
@@ -65,8 +67,8 @@ footer {
   position: fixed;
   background: linear-gradient(
     8deg,
-    rgba(50, 89, 244, 1) 0%,
-    rgba(29, 139, 248, 1) 92%
+    rgba(50, 89, 244, .9) 0%,
+    rgba(29, 139, 248, .9) 92%
   );
   z-index: 10;
   transition: width 100ms ease;
@@ -102,9 +104,6 @@ footer {
   color: rgb(30, 30, 47);
 }
 
-.nav-link:hover .link-text {
-}
-
 .link-text {
   display: none;
   margin-left: 1rem;
@@ -120,8 +119,11 @@ footer {
 } */
 
 .badge {
-  color: black;
   border: 1px solid white;
+  font-weight: 2;
+}
+.badge-primary {
+  background: rgba(29, 139, 248, 0.7);
 }
 
 .card {
@@ -133,11 +135,16 @@ footer {
   margin-bottom: 0.2rem;
 }
 
-.btn {
-  border: 1px;
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.7);
-  opacity: 0.9;
+.btn-primary {
+  background-image: linear-gradient(
+    to bottom left,
+    #1d8cf8,
+    #3358f4,
+    #1d8cf8
+  ) !important;
+}
+.btn-danger{
+  background-image: linear-gradient(to bottom left,#fd5d93,#ec250d,#fd5d93);
 }
 
 @media only screen and (max-width: 600px) {
@@ -190,4 +197,54 @@ footer {
   .nav-link svg {
     min-width: 2rem;
   }
+}
+.ticket-row{
+  margin-right:1rem;
+}
+
+.card {
+  background: #27293d;
+  border: 0;
+  position: relative;
+  width: 100%;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.card .table {
+  color: white;
+  margin-top: 1rem;
+}
+
+
+.table a {
+  text-decoration: none;
+  color: hsla(0, 0%, 100%, 0.7);
+}
+
+.input-group input {
+  background: #27293d;
+  border-color: rgba(255,255,255,.3);
+  color: white;
+}
+
+.input-group input:hover {
+  border-color: rgba(255,255,255,.9);
+}
+
+.input-group input:focus {
+  background: #27293d;
+  border-color: rgba(255,255,255,.9);
+  color: white;
+}
+
+.home_1row{
+  margin-right: 1rem;
+}
+
+#tickets_sent_body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -52,12 +52,10 @@ class Ticket(models.Model):
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
     tag = models.ForeignKey("TicketTag", related_name="tickettag", on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.title
-
-"""     def get_absolute_url(self):
-        return reverse('tracker:project-list') """
 
 class TicketTag(models.Model):
     label = models.CharField(max_length=50)

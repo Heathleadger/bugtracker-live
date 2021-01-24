@@ -62,6 +62,7 @@ def loginPage(request):
 
     if request.method == 'GET':
 
+        print(request.GET)
         if 'project_manager' in request.GET:
             pj = Account.objects.get(email="demo_admin@demo.com")
             login(request, pj)
@@ -80,7 +81,6 @@ def loginPage(request):
     if request.method == 'POST':
         form = AccountAuthenticationForm(data=request.POST)
         if form.is_valid():
-            print('valid')
             user = form.get_user()
             login(request, user)
             return redirect('tracker:homepage')

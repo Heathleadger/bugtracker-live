@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_filters',
     'tracker',
     'accounts',
-    'simple_history'
+    'simple_history',
+    'rest_framework'
 
 ]
 
@@ -57,6 +58,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
 
 ROOT_URLCONF = 'bugtracker.urls'
 

@@ -12,52 +12,135 @@ from django.db.models import Q
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.paginator import Paginator
-
-
+from rest_framework.views import APIView
+from rest_framework.response import Response 
+from rest_framework import authentication, permissions
+from rest_framework.permissions import IsAuthenticated
 # General
 
 
 def homepage(request):
-    return render(request, 'homepage.html')
 
+    if request.user.is_authenticated:
+
+
+        #Tickets sent
+        tickets_sent = Ticket.objects.filter(requester=request.user).order_by('status')
+        sent_paginator = Paginator(tickets_sent,5)
+        sent_page_number = request.GET.get('sent_page')
+        sent_page_obj = sent_paginator.get_page(sent_page_number)
+
+        #Tickets assigned
+        tickets_assigned = Ticket.objects.filter(assigned=request.user).order_by('status')
+        assigned_paginator = Paginator(tickets_assigned,5)
+        assigned_page_number = request.GET.get('assigned_page')
+        assigned_page_obj = assigned_paginator.get_page(assigned_page_number)
+        
+
+
+
+
+        context = {
+            'sent_page_obj': sent_page_obj,
+            'assigned_page_obj': assigned_page_obj
+        }
+
+
+        return render(request, 'homepage.html', context)
+    else:
+        return render(request, 'homepage.html')
 
 def accounts_json(request):
     search = request.GET.get('search')
     result = Account.objects.filter(email__icontains = search).values('id','email','role')
-
     result = list(result)
-    #acc = serializers.serialize('json',Account.objects.filter(email__icontains = search))
 
     return JsonResponse(result, safe=False)
 
-def project_create_view(request):
-    form = ProjectCreateForm()
+#Graphs data
 
-    stake_filter = StakeholdersFilter(request.GET, queryset= Account.objects.all())
-    stakeholders = stake_filter.qs
-    print(stakeholders)
 
-    if request.method == 'POST':
+class ProjectManagerTicketsOverview(APIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, format=None):
+        projects = Project.objects.filter(manager=request.user)
+
+        dataset = []
+        labels = []
+
+        for project in projects:
+
+            labels.append(project.name)
+
+            tickets = project.ticket.all()
+
+            sent = tickets.filter(status=1).count()
+            assgined = tickets.filter(status=2).count()
+            in_progress = tickets.filter(status=3).count()
+            done = tickets.filter(status=4).count()
+
+            dataset.append({'sent': sent, 'assigned':assgined, 'in_progress': in_progress, 'done':done})
+
+        data ={
+            'labels': labels,
+            'dataset' : dataset,
+        }
+
+        return Response(data)
+
+
+class UserTickets(APIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, format=None):
+        user = request.user
+
+        print(user)
+        user_tickets = Ticket.objects.filter(requester=user)
         
-        print(request.POST)        
-        print('oiee')
-        # form.save(commit=false)
-    else:
-        print('else')
+        sent = user_tickets.filter(status=1).count()
+        assgined = user_tickets.filter(status=2).count()
+        in_progress = user_tickets.filter(status=3).count()
+        done = user_tickets.filter(status=4).count()
 
-    context = {
-        'form': form,
-        'stakeholders': stakeholders,
-        'stake_filter': stake_filter
-    }
-    return render(request, 'tracker/project_creating.html', context)
+
+
+        status_label = ['Received','Assigned','In Progress','Done']
+        status_data = [sent, assgined, in_progress, done]
+
+        data ={
+            'label': status_label,
+            'value' : status_data,
+        }
+
+        return Response(data)
+
 
 
 # Ticket Views
 
 
 def ticket_detail_view(request, pk):
+    #Instance of ticket
     ticket = Ticket.objects.get(id=pk)
+
+    # Get whistory of changes
+    history = ticket.history.all()
+    total_records = []
+    #Loop through each line and check field, olg and new values
+    for line in history:
+        #Ignore the last line as it does not have a .prev_record
+        if line == history.reverse()[0]:
+            break
+        user = Account.objects.get(id=line.requester_id)
+        new_record = line
+        old_record = line.prev_record
+        delta = new_record.diff_against(old_record)
+        # Loop through changes and append to record + append user (requester)
+        for change in delta.changes:
+            total_records.append({'instance':change, 'user':user})
+
     # Checks if user is PM in order not to update field accidentally
     if request.user.role == 1:
         ticket_assigned_form = TicketEditAssignedForm(request.POST or None, instance=ticket)
@@ -70,13 +153,14 @@ def ticket_detail_view(request, pk):
 
 
     if request.method == 'POST':
+        # Trigger star ticket for developers
         if 'start' in request.POST:
             ticket = Ticket.objects.get(id=pk)
             ticket.status = 3
             ticket.save()
             ticket_status_form = TicketEditStatusForm(instance=ticket)
             ticket_assigned_form = TicketEditAssignedForm(instance=ticket)
-
+        #Trigger finish ticket for developers
         if 'finish' in request.POST:
             ticket = Ticket.objects.get(id=pk)
             ticket.status = 4
@@ -92,7 +176,7 @@ def ticket_detail_view(request, pk):
             new_comment.save()
             comment_form = TicketCommentForm()
 
-
+        # Assign new dev to ticket - autoupdate the status
         if 'assigned' in ticket_assigned_form.data:
             if ticket_assigned_form.is_valid() and request.user.role == 1 :
                 ticket_assigned_form.save()
@@ -101,9 +185,9 @@ def ticket_detail_view(request, pk):
                 ticket_status_form = TicketEditStatusForm(instance=ticket)
                 ticket_assigned_form = TicketEditAssignedForm(instance=ticket)
 
+        # Update status
         if 'status' in ticket_status_form.data:
             if ticket_status_form.is_valid() and request.user.role == 1 :
-                print('status valid')
                 ticket_status_form.save()
                 ticket_status_form = TicketEditStatusForm(instance=ticket)
                 ticket_assigned_form = TicketEditAssignedForm(instance=ticket)
@@ -116,7 +200,8 @@ def ticket_detail_view(request, pk):
         'ticket': ticket,
         'form': comment_form,
         'ticket_assigned_form': ticket_assigned_form,
-        'ticket_status_form': ticket_status_form 
+        'ticket_status_form': ticket_status_form,
+        'history': total_records
     }
     return render(request,'tracker/ticket_detail.html', context)
 
@@ -125,13 +210,15 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
     form_class = TicketCreateForm
     template_name = 'tracker/ticket_form.html'
     
- 
     def form_valid(self, form, **kwargs):
         ticket = form.save(commit=False)
         project_id = self.kwargs['project_id']
         project = get_object_or_404(Project, id=project_id)
+        #Assign project to ticket
         ticket.project = project
+        #Assign user to ticket
         ticket.requester = self.request.user
+        #Auto update status in case PM has set a dev for a ticket
         if self.request.user.role == 1 and ticket.assigned != None:
             ticket.status  = 2
         return super(TicketCreateView, self).form_valid(form)
@@ -165,9 +252,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         return context
     
     
-
-
-
 class ProjectListView(LoginRequiredMixin, ListView):
     model = Project
     paginate_by = 5
@@ -175,12 +259,14 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        user = self.request.user
         if self.request.GET.get('search'):
             search_field = self.request.GET.get('search')
-            queryset = Project.objects.filter(name__icontains = search_field)
-        
+            queryset = Project.objects.filter(Q(name__icontains = search_field) & (Q(manager=user)| Q(stakeholder=user))).distinct()
+        else:
+            queryset = Project.objects.filter(Q(manager=user)| Q(stakeholder=user)).distinct()
         return queryset
-    
+
     
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project

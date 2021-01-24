@@ -1,3 +1,154 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container">Home</div>
+{% load custom_tag %}
+  {% if request.user.role == 1 %}
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          My projects
+        </div>
+        <div id="pm_chart_body">
+          <canvas id="pm_chart" width="200px" height="100px"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+  <div class="row home_1row">
+    <div class="col-6">
+      <div class="card" id="tickets_sent">
+        <div class="card-header">Tickets Sent</div>
+        <div id="tickets_sent_body">
+          <canvas id="myChart" width="200px" height="100px"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          Tickets Sent
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Title</th>
+              <th>Assignee</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for ticket in sent_page_obj.object_list %}
+            <tr>
+              <td>
+                <a href="{% url 'tracker:project-detail' ticket.project.id%}">
+                  {{ ticket.project }}
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'tracker:ticket-detail' ticket.id%}">
+                {{ ticket.title }}
+                </a>
+              </td>
+              <td>{{ ticket.assigned }}</td>
+              <td>
+                <div class="progress">
+                  <div 
+                    class="progress-bar progress-bar-striped {% if ticket.status == 1  %}bg-danger{% elif ticket.status == 2 %}bg-warning {% elif ticket.status == 3 %} bg-info {% elif ticket.status == 4 %} bg-success {% endif %}" 
+                    role="progressbar" 
+                    style="width:{% if ticket.status == 1  %}10%{% elif ticket.status == 2 %}30% {% elif ticket.status == 3 %} 50% {% elif ticket.status == 4 %} 100% {% endif %}" 
+                    aria-valuenow="50" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                  </div>
+                </div>    
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <div class="card-footer d-flex justify-content-center">
+          <ul class="pagination">
+            <li class="page-item {% if not sent_page_obj.has_previous %} disabled {% endif %}">
+              <a class="page-link" href="?{% if sent_page_obj.has_previous %}{% param_replace sent_page=sent_page_obj.previous_page_number %} {% endif %}" tabindex="-1">Previous</a>
+            </li>
+            
+            {% for page_num in sent_page_obj.paginator.page_range %}
+                <li class="page-item {% if sent_page_obj.number == page_num %} active {% endif %}"><a class="page-link" href="?{% param_replace sent_page=page_num %}">{{page_num}}</a></li>       
+            {% endfor %}
+  
+            <li class="page-item{% if not sent_page_obj.has_next %} disabled {% endif %}">
+              <a class="page-link" name="sent" href="?{% if sent_page_obj.has_next %}{% param_replace sent_page=sent_page_obj.next_page_number %}{% endif %}">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {% if request.user.role == 1 or request.user.role == 2 %}
+        <div class="card">
+          <div class="card-header">
+            Tickets to solve
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Title</th>
+                <th>Priority</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for ticket in assigned_page_obj.object_list %}
+              <tr>
+                <td>
+                  <a href="{% url 'tracker:project-detail' ticket.project.id%}">
+                    {{ ticket.project }}
+                  </a>
+                </td>
+                <td>
+                  <a href="{% url 'tracker:ticket-detail' ticket.id%}">
+                  {{ ticket.title }}
+                  </a>
+                </td>
+                <td>{{ ticket.priority }}</td>
+                <td>
+                  <div class="progress">
+                    <div 
+                      class="progress-bar progress-bar-striped {% if ticket.status == 1  %}bg-danger{% elif ticket.status == 2 %}bg-warning {% elif ticket.status == 3 %} bg-info {% elif ticket.status == 4 %} bg-success {% endif %}" 
+                      role="progressbar" 
+                      style="width:{% if ticket.status == 1  %}10%{% elif ticket.status == 2 %}30% {% elif ticket.status == 3 %} 50% {% elif ticket.status == 4 %} 100% {% endif %}" 
+                      aria-valuenow="50" 
+                      aria-valuemin="0" 
+                      aria-valuemax="100">
+                    </div>
+                  </div>    
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <div class="card-footer d-flex justify-content-center">
+            <ul class="pagination">
+              <li class="page-item {% if not assigned_page_obj.has_previous %} disabled {% endif %}">
+                <a class="page-link" href="?{% if assigned_page_obj.has_previous %}{% param_replace assigned_page=assigned_page_obj.previous_page_number %} {% endif %}" tabindex="-1">Previous</a>
+              </li>
+              
+              {% for page_num in assigned_page_obj.paginator.page_range %}
+                  <li class="page-item {% if assigned_page_obj.number == page_num %} active {% endif %}"><a class="page-link" href="?{% param_replace assigned_page=page_num %}">{{page_num}}</a></li>       
+              {% endfor %}
+    
+              <li class="page-item{% if not assigned_page_obj.has_next %} disabled {% endif %}">
+                <a class="page-link"  href="?{% if assigned_page_obj.has_next %}{% param_replace assigned_page=assigned_page_obj.next_page_number %}{% endif %}">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
 {% endblock content %}
+
+

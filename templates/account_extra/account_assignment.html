@@ -1,49 +1,56 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container">
-        {% if message %}
-            <div class="alert alert-{% if message_status == 200%}success{% else %}danger{% endif%} m-3">
-            {{message}}
-            </div>
-        {% endif %}
+  {% if message %}
+  <div
+    class="alert alert-{% if message_status == 200%}success{% else %}danger{% endif%} m-3"
+  >
+    {{message}}
+  </div>
+  {% endif %}
 
-    <div class="card"> 
-        <div class="card-header">Account Assignment</div>
-        <div class="d-flex">
-            <input  class="form-control" type="text" id="search_bar" placeholder="Search by email">
-            <button class="btn btn-primary" id="filter_btn" type="submit"><i class="fas fa-search"></i></button>
-        </div>
-        <form method="POST"> {% csrf_token %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody id="table_body">
-                {{ formset.management_form }}
-
-                {% for form in formset %}
-                    {% for hidden in form.hidden_fields %}
-                        {{hidden}}
-                    {% endfor %}
-                <tr>
-                    <td>
-                        {{ form.id.value }}
-                    </td>
-                    <td>{{ form.email.value}} {{ form.email }}</td>
-                    <td>{{ form.role}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="card-footer">
-            <button class="btn btn-warning btn-block" type="submit">Update</button>
-        </div>
-    </form>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <h2>Account Assignment</h2>
+      <div class="float-right d-flex align-center justify-container-center">
+        <input
+          class="form-control"
+          type="text"
+          id="search_bar"
+          placeholder="Search by email"
+        />
+        <button class="btn btn-primary d-flex align-center" id="filter_btn" type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
     </div>
+    <form method="POST">
+      {% csrf_token %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          {{ formset.management_form }} {% for form in formset %} 
+          {% for hidden in form.hidden_fields %}
+          {{hidden}} {% endfor %}
+          <tr>
+            <td>{{ form.id.value }}</td>
+            <td>{{ form.email.value}} {{ form.email }}</td>
+            <td>{{ form.role}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="card-footer">
+        <button class="btn btn-warning btn-block" type="submit">Update</button>
+      </div>
+    </form>
+  </div>
 </div>
 {% load static %}
-<script src="{% static 'js/main/account_search_assignment.js' %}">
+<script src="{% static 'js/main/account_search_assignment.js' %}"></script>
 {% endblock %}
