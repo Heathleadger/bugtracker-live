@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'tracker',
     'accounts',
     'simple_history',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders',
 
 ]
 
@@ -57,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -152,3 +155,10 @@ MEDIA_ROOT  = os.path.join(BASE_DIR, 'static/files')
 MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "vsabugtracker.herokuapp.com",
+    "http://127.0.0.1:9000"
+]
