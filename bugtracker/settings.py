@@ -159,6 +159,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 CORS_ALLOWED_ORIGINS = [
-    "vsabugtracker.herokuapp.com",
-    "http://127.0.0.1:9000"
+    "https://vsabugtracker.herokuapp.com",
+    "http://127.0.0.1:8000"
 ]
