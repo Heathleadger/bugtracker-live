@@ -8,7 +8,7 @@ from tracker.views import (
     ProjectDeleteView,
     ticket_detail_view,
     TicketCreateView,
-    accounts_json,
+    AccountsAPI,
     UserTickets,
     ProjectManagerTicketsOverview,
     index
@@ -35,7 +35,7 @@ urlpatterns = [
 
 
     #Json response
-    path('accounts_json/', accounts_json),
+    path('api/accounts/', AccountsAPI.as_view(), name="accounts-api"),
     path('api/user_ticket_status', UserTickets.as_view(),name="user-ticket-status"),
     path('api/pm_tickets_overview', ProjectManagerTicketsOverview.as_view(),name="pm-tickets-overview"),
 

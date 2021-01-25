@@ -51,12 +51,16 @@ def homepage(request):
     else:
         return render(request, 'homepage.html')
 
-def accounts_json(request):
-    search = request.GET.get('search')
-    result = Account.objects.filter(email__icontains = search).values('id','email','role')
-    result = list(result)
 
-    return JsonResponse(result, safe=False)
+class AccountsAPI(APIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, format=None):
+
+        search = request.GET.get('search')
+        data = Account.objects.filter(email__icontains = search).values('id','email','role')
+        data = list(data)
+        return Response(data)
 
 #Graphs data
 
