@@ -18,7 +18,8 @@ from rest_framework import authentication, permissions
 from rest_framework.permissions import IsAuthenticated
 # General
 
-
+def index(request):
+    return render(request,'index.html')
 def homepage(request):
 
     if request.user.is_authenticated:

@@ -4,28 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
-    <meta
-      name="author"
-      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
-    />
-    <meta name="generator" content="Hugo 0.79.0" />
+
     <title>Sigin - Bugtracker </title>
     {% load static %}
-    <link
-      rel="canonical"
-      href="https://getbootstrap.com/docs/5.0/examples/sign-in/"
-    />
 
-    <!-- Bootstrap core CSS -->
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
+      href="{% static '/css/bootstrap/bootstrap.min.css'%}"
     />
-
-    <!-- Custom styles for this template -->
     <link href="{% static 'css/signin.css'%}" rel="stylesheet" />
+
+
   </head>
   <body class="text-center">
     <main class="form-signin">
@@ -35,27 +24,29 @@
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
         {{form.as_p}}
         <div class="checkbox mb-3">
-          <label>
-            <span class="text-muted">
+          <label class="not_member">
               Not a member?
-              <a href="{% url 'accounts:registration' %}">Signup</a></span
-            >
+              <a href="{% url 'accounts:registration' %}">
+                  Signup
+              </a>
           </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">
           Sign in
         </button>
       </form>
-      <h6 class="text-muted">or</h6>
-      <span>Sign in with <strong>Demo accounts</strong></span>
+      <h6>or</h6>
+      <div class="sign-text">
+        <span>Sign in with <strong>Demo accounts</strong></span>
+      </div>
       <div class='row'>
         <form method="GET" class='row mt-2'>
           <!-- <input type="text" name="username" id="id_username"  value="">
           <input type="password" name="password" id="id_password"> -->
 
-          <div class="col-4"><button class="btn btn-primary text-white border-light h-100" name="project_manager" type="submit"> <strong>Project Manager</strong></button></div>
-          <div class="col-4"><button class="btn btn-warning text-white border-light h-100" name="developer" type="submit"> <strong>Developer</strong></button></div>
-          <div class="col-4"><button class="btn btn-success text-white border-light h-100" name="submiter" type="submit"> <strong>Submiter </strong></button></div>
+          <div class="col-4"><button class="btn btn-primary btn-demo" name="project_manager" type="submit"> <strong>Project Manager</strong></button></div>
+          <div class="col-4"><button class="btn btn-warning btn-demo" name="developer" type="submit"> <strong>Developer</strong></button></div>
+          <div class="col-4"><button class="btn btn-success btn-demo" name="submiter" type="submit"> <strong>Submiter </strong></button></div>
         </form>
         </div>
     </main>

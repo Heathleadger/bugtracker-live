@@ -248,3 +248,16 @@ footer {
   align-items: center;
   justify-content: center;
 }
+
+.row-pm{
+  margin-right: 1rem;
+}
+
+.row-pm .col-12 .card{
+}
+
+#pm_chart_body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

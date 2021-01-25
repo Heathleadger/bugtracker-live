@@ -93,4 +93,4 @@ def loginPage(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('tracker:homepage')
+    return redirect('tracker:index')

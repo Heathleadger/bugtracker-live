@@ -10,12 +10,15 @@ from tracker.views import (
     TicketCreateView,
     accounts_json,
     UserTickets,
-    ProjectManagerTicketsOverview
+    ProjectManagerTicketsOverview,
+    index
     )
 
 app_name = 'tracker'
 urlpatterns = [
-    path('', homepage, name="homepage"),
+
+    path('', index, name="index"),
+    path('home', homepage, name="homepage"),
 
     # Ticket Urls
 
