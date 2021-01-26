@@ -16,10 +16,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response 
 from rest_framework import authentication, permissions
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
+
 # General
 
 def index(request):
     return render(request,'index.html')
+
+@login_required
 def homepage(request):
 
     if request.user.is_authenticated:
