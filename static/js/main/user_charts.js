@@ -30,7 +30,7 @@ $.ajax({
 function setPmTicketsChart(data) {
 
     var ctx = document.getElementById('pm_chart').getContext('2d');
-    Chart.defaults.global.defaultFontColor = 'rgba(255,255,255,0.8)';
+    Chart.defaults.global.defaultFontColor = 'rgba(0,0,0,0.8)';
 
 
     var gradientFill = ctx.createLinearGradient(0, 1000, 0, 0);
