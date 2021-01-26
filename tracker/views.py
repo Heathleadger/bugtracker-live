@@ -90,8 +90,6 @@ class ProjectManagerTicketsOverview(APIView):
 
         dataset = [sent, assigned, in_progress, done]
 
-        print(labels)
-        print(dataset)
         data ={
             'labels': labels,
             'dataset': dataset

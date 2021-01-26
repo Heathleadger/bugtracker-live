@@ -67,14 +67,14 @@ $(document).ready(function () {
             })
     }
 
-    var url = 'http://127.0.0.1:8000/api/accounts?search=';
+    var url = '/api/accounts?search=';
     listData(url)
 
     $('#filter_btn').click(function (e) {
         e.preventDefault();
 
         var search = $('#search_bar').val();
-        var url = 'http://127.0.0.1:8000/api/accounts?search=' + search;
+        var url = '/api/accounts?search=' + search;
 
         listData(url)
 
