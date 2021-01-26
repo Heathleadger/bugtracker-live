@@ -68,28 +68,33 @@ class AccountsAPI(APIView):
 class ProjectManagerTicketsOverview(APIView):
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = (IsAuthenticated,)
+
     def get(self, request, format=None):
         projects = Project.objects.filter(manager=request.user)
 
-        dataset = []
         labels = []
+        sent = {'label':'Sent', 'data':[]}
+        assigned = {'label':'Assigned', 'data':[]}
+        in_progress = {'label':'In Progress', 'data':[]}
+        done = {'label':'Done', 'data':[]}
 
         for project in projects:
+            tickets = Ticket.objects.filter(project=project)
 
             labels.append(project.name)
+            
+            sent['data'].append(tickets.filter(status=1).count())
+            assigned['data'].append(tickets.filter(status=2).count())
+            in_progress['data'].append(tickets.filter(status=3).count())
+            done['data'].append(tickets.filter(status=4).count())
 
-            tickets = project.ticket.all()
+        dataset = [sent, assigned, in_progress, done]
 
-            sent = tickets.filter(status=1).count()
-            assgined = tickets.filter(status=2).count()
-            in_progress = tickets.filter(status=3).count()
-            done = tickets.filter(status=4).count()
-
-            dataset.append({'sent': sent, 'assigned':assgined, 'in_progress': in_progress, 'done':done})
-
+        print(labels)
+        print(dataset)
         data ={
             'labels': labels,
-            'dataset' : dataset,
+            'dataset': dataset
         }
 
         return Response(data)

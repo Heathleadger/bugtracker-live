@@ -15,66 +15,68 @@
     <title>Home</title>
   </head>
   <body>
-    <main class="row" role="main">
-      <nav class="nav flex-column sidenav">
-        <ul class="side-navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'tracker:homepage' %}">
-              <i class="fas fa-home"></i>
-              <span class="link-text">Home</span>
-            </a>
-          </li>
-          {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'tracker:project-list'%}">
-              <i class="fas fa-stream"></i>
-              <span class="link-text"> My Projects </span>
-            </a>
-          </li>
-          {% if request.user.is_staff %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:account-assignment'%}">
-              <i class="fas fa-users-cog"></i>
-              <span class="link-text"> User Assignment </span>
-            </a>
-          </li>
-          {% endif %} {% endif %}
-          <li class="nav-item logo">
-            <a class="nav-link" href="#">
-              <i class="fas fa-bug"></i>
-              <span class="link-text">BugTracker</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="col-md-1 .d-sm-none .d-md-block"></div>
-      <div class="col-md-11">
-        <div class="top-bar">
-          <div class="top-items mr-1 pr-1">
+    <main role="main">
+      <div class="row">
+        <nav class="nav flex-column sidenav">
+          <ul class="side-navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'tracker:homepage' %}">
+                <i class="fas fa-home"></i>
+                <span class="link-text">Home</span>
+              </a>
+            </li>
             {% if request.user.is_authenticated %}
-            <span
-              class="badge badge-{% if request.user.role == 1 %}primary{% elif request.user.role == 2 %}warning{% else %}success{% endif %}"
-              >{{ request.user.get_role_display }}</span
-            >
-            <span class="mx-1 px-1 border-left border-right border-secondary"
-              >{{ request.user }}</span
-            >
-            <a href="{%url 'accounts:logout'%}" class="btn btn-primary mr-2"
-              >Logout</a
-            >
-            {% else %}
-            <a
-              href="{%url 'accounts:registration'%}"
-              class="btn btn-primary mr-2"
-              >Signup</a
-            >
-            <a href="{%url 'accounts:login'%}" class="btn btn-primary">Login</a>
-            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'tracker:project-list'%}">
+                <i class="fas fa-stream"></i>
+                <span class="link-text"> My Projects </span>
+              </a>
+            </li>
+            {% if request.user.is_staff %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:account-assignment'%}">
+                <i class="fas fa-users-cog"></i>
+                <span class="link-text"> User Assignment </span>
+              </a>
+            </li>
+            {% endif %} {% endif %}
+            <li class="nav-item logo">
+              <a class="nav-link" href="#">
+                <i class="fas fa-bug"></i>
+                <span class="link-text">BugTracker</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+          <div class="top-bar">
+            <div class="top-items col-12 d-flex justify-content-center">
+              {% if request.user.is_authenticated %}
+              <span
+                class="badge badge-{% if request.user.role == 1 %}primary{% elif request.user.role == 2 %}warning{% else %}success{% endif %}"
+                >{{ request.user.get_role_display }}</span
+              >
+              <span class="mx-1 px-1 border-left border-right border-secondary"
+                >{{ request.user }}</span
+              >
+              <a href="{%url 'accounts:logout'%}" class="btn btn-primary mr-2"
+                >Logout</a
+              >
+              {% else %}
+              <a
+                href="{%url 'accounts:registration'%}"
+                class="btn btn-primary mr-2"
+                >Signup</a
+              >
+              <a href="{%url 'accounts:login'%}" class="btn btn-primary">Login</a>
+              {% endif %}
+            </div>
           </div>
+
+          {% block content %} {% endblock content %}
+
         </div>
-
-        {% block content %} {% endblock content %}
-
       </div>
     </main>
 

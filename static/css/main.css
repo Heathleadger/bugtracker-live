@@ -39,15 +39,22 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-track {
   background: #000;
 }
+
 body::-webkit-scrollbar-thumb {
   background: #2a2a42;
 }
+
 main {
   min-height: 100vh;
 }
+
 footer {
   position: absolute;
   bottom: 0;
+}
+
+.row{
+  margin:auto;
 }
 
 .top-bar {
@@ -239,25 +246,3 @@ footer {
   color: white;
 }
 
-.home_1row{
-  margin-right: 1rem;
-}
-
-#tickets_sent_body{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.row-pm{
-  margin-right: 1rem;
-}
-
-.row-pm .col-12 .card{
-}
-
-#pm_chart_body{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

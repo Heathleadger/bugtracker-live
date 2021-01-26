@@ -19,7 +19,6 @@ $.ajax({
     url: pm_tickets_overview_endpoint,
     success: function (data) {
         setPmTicketsChart(data);
-        console.log(data.dataset)
     },
     error: function (error) {
         emptyCall()
@@ -54,37 +53,29 @@ function setPmTicketsChart(data) {
     gradientFill4.addColorStop(0.5, "rgba(0,128,0,0.1)");
     gradientFill4.addColorStop(0, "rgba(0,128,0,0)");
 
+    var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return r + "," + g + "," + b;
+    }
+
+
+    for (var i = 0; i < data.dataset.length; i++) {
+        var color = dynamicColors()
+        console.log(color)
+        data.dataset[i]['backgroundColor'] = 'rgba(' + color + ', 0.2)';
+        data.dataset[i]['borderColor'] = 'rgb(' + color + ')';
+        data.dataset[i]['borderWidth'] = 1;
+
+    }
 
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            datasets: [
-
-                {
-                    label: ['1', '2', '3', '4',],
-                    data: ['1', '1', '1', '1',],
-                },
-                {
-                    label: ['1', '2', '3', '4',],
-                    data: ['1', '1', '1', '1',],
-                },
-                {
-                    label: ['1', '2', '3', '4',],
-                    data: ['1', '1', '1', '1',],
-                },
-                {
-                    label: ['1', '2', '3', '4',],
-                    data: ['1', '1', '1', '1',],
-                },
-
-            ]
-        },
-        options: {
-            legend: {
-                display: false
-            }
+            labels: data.labels,
+            datasets: data.dataset
         }
-
     });
 }
 
