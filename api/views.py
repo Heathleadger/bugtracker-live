@@ -37,7 +37,7 @@ class ProjectGeneralView(generics.ListAPIView):
     serializer_class = ProjectSerializer
     
     def get_queryset(self):
-        return Project.objects.filter(Q(manager = self.request.user) | Q(stakeholder= self.request.user))
+        return Project.objects.filter(Q(manager = self.request.user) | Q(stakeholder= self.request.user)).distinct()
     
 
 
