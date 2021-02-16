@@ -64,7 +64,7 @@ class TicketTag(models.Model):
         return self.label
 
 class TicketComment(models.Model):
-    ticket = models.ForeignKey(Ticket, related_name="ticketcoment", on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, related_name="ticketcomment", on_delete=models.CASCADE)
     user = models.ForeignKey(Account, related_name='usercomment', on_delete=models.CASCADE)
     comment = models.TextField()
     file = models.FileField(blank=True, null=True)
@@ -79,11 +79,3 @@ class TicketHistory(models.Model):
     old_value = models.CharField(max_length=255)
     new_value = models.CharField(max_length=255)
     data_created = models.DateTimeField(auto_now_add=True)
-
-class TicketFiles(models.Model):
-    ticket = models.ForeignKey(Ticket, related_name="ticketfiles", on_delete=models.CASCADE)
-    file = models.FileField(upload_to=None, max_length=100)
-
-class TicketFilesComment(models.Model):
-    ticketfile = models.ForeignKey(TicketFiles, related_name="ticketfilecoment", on_delete=models.CASCADE)
-    comment = models.TextField()

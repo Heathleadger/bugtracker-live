@@ -35,7 +35,7 @@ urlpatterns = [
 
 
     #Json response
-    path('api/accounts/', AccountsAPI.as_view(), name="accounts-api"),
+    path('api/accounts2/', AccountsAPI.as_view(), name="accounts-api"),
     path('api/user_ticket_status', UserTickets.as_view(),name="user-ticket-status"),
     path('api/pm_tickets_overview', ProjectManagerTicketsOverview.as_view(),name="pm-tickets-overview"),
 

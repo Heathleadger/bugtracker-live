@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'simple_history',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
 
 ]
 
@@ -67,6 +68,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -157,11 +160,10 @@ MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
-
-CORS_ALLOWED_ORIGINS = [
-    "https://vsabugtracker.herokuapp.com",
-    "http://127.0.0.1:8000"
-]
-
-CORS_ORIGIN_WHITELIST=('vsabugtracker.herokuapp.com')
+# CORS_ALLOWED_ORIGINS = [
+#     "https://vsabugtracker.herokuapp.com",
+#     "http://127.0.0.1:8000",
+#     "http://127.0.0.1:3000"
+# ]
