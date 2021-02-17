@@ -36,6 +36,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class TicketsSerializer(serializers.ModelSerializer):
     status = serializers.CharField(source= 'get_status_display', read_only=True)
     priority = serializers.CharField(source= 'get_priority_display', read_only=True)
