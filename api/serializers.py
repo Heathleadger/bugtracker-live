@@ -37,6 +37,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class TicketsSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source= 'get_status_display', read_only=True)
+    priority = serializers.CharField(source= 'get_priority_display', read_only=True)
     history = serializers.SerializerMethodField()
     requester = AccountsSerializer(required=False)
     ticketcomment = TicketCommentsSerializer(read_only=True, many=True)
@@ -46,7 +48,7 @@ class TicketsSerializer(serializers.ModelSerializer):
     )
     tag = serializers.PrimaryKeyRelatedField(
     many = False,
-    queryset = TicketTag.objects.all()
+    queryset = TicketTag.objects.all(),
     )
 
     # project = ProjectSerializer(read_only=True)
